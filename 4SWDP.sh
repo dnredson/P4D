@@ -127,12 +127,26 @@ docker exec sw4 sh -c 'arp -i veth8 -s 10.0.1.2 00:00:00:00:01:02'
 docker exec sw4 sh -c 'arp -i veth9 -s 10.0.5.2 00:00:00:00:05:02'
 
 #Inicia o BMV2
-docker exec sw1 sh -c 'nohup simple_switch  --thrift-port 50001 -i 1@veth1 -i 2@veth3  4SWDP.json &'
-docker exec sw2 sh -c 'nohup simple_switch  --thrift-port 50002 -i 1@veth4 -i 2@veth5  4SWDP.json &'
-docker exec sw3 sh -c 'nohup simple_switch  --thrift-port 50003 -i 1@veth6 -i 2@veth7  4SWDP.json &'
-docker exec sw4 sh -c 'nohup simple_switch  --thrift-port 50004 -i 1@veth8 -i 2@veth9  4SWDP.json &'
+docker exec sw1 sh -c 'nohup simple_switch  --thrift-port 50001 -i 1@veth1 -i 2@veth3  standard.json &'
+docker exec sw2 sh -c 'nohup simple_switch  --thrift-port 50002 -i 1@veth4 -i 2@veth5  standard.json &'
+docker exec sw3 sh -c 'nohup simple_switch  --thrift-port 50003 -i 1@veth6 -i 2@veth7  standard.json &'
+docker exec sw4 sh -c 'nohup simple_switch  --thrift-port 50004 -i 1@veth8 -i 2@veth9  standard.json &'
 
 
+docker exec sw1 sh -c 'echo "table_add MyIngress.ipv4_lpm ipv4_forward 10.0.1.2  => 00:00:00:00:01:02 1" | simple_switch_CLI --thrift-port 50001'
+docker exec sw1 sh -c 'echo "table_add MyIngress.ipv4_lpm ipv4_forward 10.0.5.2 =>  00:00:00:00:05:02 2" | simple_switch_CLI --thrift-port 50001'
+
+docker exec sw2 sh -c 'echo "table_add MyIngress.ipv4_lpm ipv4_forward 10.0.1.2  => 00:00:00:00:01:02 1" | simple_switch_CLI --thrift-port 50002'
+docker exec sw2 sh -c 'echo "table_add MyIngress.ipv4_lpm ipv4_forward 10.0.5.2 =>  00:00:00:00:05:02 2" | simple_switch_CLI --thrift-port 50002'
+
+
+docker exec sw3 sh -c 'echo "table_add MyIngress.ipv4_lpm ipv4_forward 10.0.1.2  => 00:00:00:00:01:02 1" | simple_switch_CLI --thrift-port 50003'
+docker exec sw3 sh -c 'echo "table_add MyIngress.ipv4_lpm ipv4_forward 10.0.5.2 =>  00:00:00:00:05:02 2" | simple_switch_CLI --thrift-port 50003'
+
+
+
+docker exec sw4 sh -c 'echo "table_add MyIngress.ipv4_lpm ipv4_forward 10.0.1.2  => 00:00:00:00:01:02 1" | simple_switch_CLI --thrift-port 50004'
+docker exec sw4 sh -c 'echo "table_add MyIngress.ipv4_lpm ipv4_forward 10.0.5.2 =>  00:00:00:00:05:02 2" | simple_switch_CLI --thrift-port 50004'
 
 #table_add ipv4_lpm ipv4_forward 10.0.1.2/32 => 00:00:00:00:01:02 1
 #table_add ipv4_lpm ipv4_forward 10.0.2.2/32 => 00:00:00:00:02:02 2
