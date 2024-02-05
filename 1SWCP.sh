@@ -66,7 +66,7 @@ docker exec sw1 sh -c 'arp -i veth1 -s 10.0.1.2 00:00:00:00:01:02'
 
 #Inicia o BMV2
 docker exec sw1 sh -c 'nohup simple_switch  --thrift-port 50001 -i 1@veth1 -i 2@veth3  standard.json &'
-
+# Para iniciar com o log: simple_switch  --log-console --thrift-port 50001 -i 1@veth1 -i 2@veth3  standard.json
 #Adiciona regras via API do BMv2
 docker exec sw1 sh -c 'echo "table_add MyIngress.ipv4_lpm ipv4_forward 10.0.1.2  => 00:00:00:00:01:02 1" | simple_switch_CLI --thrift-port 50001'
 docker exec sw1 sh -c 'echo "table_add MyIngress.ipv4_lpm ipv4_forward 10.0.2.2 =>  00:00:00:00:02:02 2" | simple_switch_CLI --thrift-port 50001'
