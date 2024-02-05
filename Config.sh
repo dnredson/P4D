@@ -6,3 +6,8 @@ docker volume create portainer_data
 docker run -itd --name compiler -v shared:/codes --workdir /codes dnredson/p4c
 docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
 
+
+#Para acessar o compiler:
+# docker exec -it compiler /bin/bash 
+# Para compilar:
+# p4c-bm2-ss <codigo.p4> -o <saida.json>
